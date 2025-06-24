@@ -15,7 +15,7 @@ class ArticleController extends Controller
     public static function middleware(): array
     {
         return [ 
-            new Middleware('auth', except: ['index', 'show']),
+            new Middleware('auth', except: ['index', 'show', 'byCategory', 'byUser']),
         ];
     }
 
@@ -50,13 +50,17 @@ class ArticleController extends Controller
     ]);
     return redirect(route('homepage'))->with('message', 'Articolo creato con successo');
     }
-
+    
+    public function index (){
+         $articles = Article::orderBy('created_at', 'desc')->get();
+          return view('article.index', compact('articles'));
+    }
     /**
      * Display the specified resource.
      */
     public function show(Article $article)
     {
-        //
+    return view('article.show', compact('article'));
     }
 
     /**
