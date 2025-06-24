@@ -13,7 +13,14 @@
         <div class="row mb-5">
             <div class="col-12">
                 <h2 class="mb-4 fw-bold">Articoli da Revisionare</h2>
-                <x-articles-table :articles="$unrevisionedArticles" />
+                @if($unrevisionedArticles->isNotEmpty())
+                    <x-articles-table :articles="$unrevisionedArticles" />
+                @else
+                    <div class="alert alert-info text-center">
+                        <h4 class="alert-heading">Ottimo lavoro!</h4>
+                        <p>Non ci sono nuovi articoli da revisionare al momento. Attendi che i redattori ne scrivano di nuovi.</p>
+                    </div>
+                @endif
             </div>
         </div>
         
@@ -21,7 +28,13 @@
         <div class="row mb-5">
             <div class="col-12">
                 <h2 class="mb-4 fw-bold">Articoli Accettati</h2>
-                <x-articles-table :articles="$acceptedArticles" />
+                 @if($acceptedArticles->isNotEmpty())
+                    <x-articles-table :articles="$acceptedArticles" />
+                @else
+                    <div class="alert alert-light text-center">
+                        <p class="mb-0">Nessun articolo è stato ancora accettato.</p>
+                    </div>
+                @endif
             </div>
         </div>
         
@@ -29,7 +42,13 @@
         <div class="row">
             <div class="col-12">
                 <h2 class="mb-4 fw-bold">Articoli Rifiutati</h2>
-                <x-articles-table :articles="$rejectedArticles" />
+                 @if($rejectedArticles->isNotEmpty())
+                    <x-articles-table :articles="$rejectedArticles" />
+                @else
+                     <div class="alert alert-light text-center">
+                        <p class="mb-0">Nessun articolo è stato ancora rifiutato.</p>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

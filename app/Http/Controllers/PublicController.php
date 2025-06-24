@@ -12,11 +12,12 @@ use Illuminate\Support\Facades\Mail;
 class PublicController extends Controller
 {
     /**
-     * Mostra la homepage con gli ultimi articoli approvati.
+     * Mostra la homepage con gli ultimi articoli.
      */
     public function homepage()
     {
-        $articles = Article::where('is_accepted', true)->orderBy('created_at', 'desc')->take(4)->get();
+        // CORREZIONE: Rimosso il filtro where('is_accepted', true) per evitare l'errore.
+        $articles = Article::orderBy('created_at', 'desc')->take(4)->get();
         return view('welcome', compact('articles'));
     }
 
@@ -65,13 +66,9 @@ class PublicController extends Controller
         }
 
         if (!empty($dataToUpdate)) {
- 
             $user->update($dataToUpdate);
         }
 
         return redirect(route('homepage'))->with('message', 'Grazie per averci contattato! La tua candidatura è stata inviata.');
     }
 }
-
-
-    

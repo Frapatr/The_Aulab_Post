@@ -16,24 +16,30 @@ class RevisorController extends Controller
         return view('revisor.dashboard', compact('unrevisionedArticles', 'acceptedArticles', 'rejectedArticles'));
     }
 
-    // NUOVO METODO: Accetta un articolo
+ 
     public function acceptArticle(Article $article)
     {
-        $article->update(['is_accepted' => true]);
+        $article->is_accepted = true;
+        $article->save();
+
         return redirect(route('revisor.dashboard'))->with('message', "Hai accettato l'articolo '{$article->title}'.");
     }
 
-    // NUOVO METODO: Rifiuta un articolo
+
     public function rejectArticle(Article $article)
     {
-        $article->update(['is_accepted' => false]);
+        $article->is_accepted = false;
+        $article->save();
+        
         return redirect(route('revisor.dashboard'))->with('message', "Hai rifiutato l'articolo '{$article->title}'.");
     }
 
-    // NUOVO METODO: Annulla la revisione e rimette l'articolo in attesa
+
     public function undoArticle(Article $article)
     {
-        $article->update(['is_accepted' => null]);
+        $article->is_accepted = null;
+        $article->save();
+
         return redirect(route('revisor.dashboard'))->with('message', "L'articolo '{$article->title}' è stato rimesso in revisione.");
     }
 }

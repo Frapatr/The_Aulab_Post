@@ -17,14 +17,15 @@ Route::get('/article/index', [ArticleController::class, 'index'])->name('article
 Route::get('/article/show/{article}', [ArticleController::class, 'show'])->name('article.show');
 Route::get('/article/category/{category}', [ArticleController::class, 'byCategory'])->name('article.byCategory');
 Route::get('/article/user/{user}', [ArticleController::class, 'byUser'])->name('article.byUser');
+Route::get('/article/search', [ArticleController::class, 'articleSearch'])->name('article.search'); // NUOVA ROTTA
 
-// Gruppo di rotte per il Redattore (Marta)
+// Gruppo di rotte per il Redattore
 Route::middleware('writer')->group(function () {
     Route::get('/article/create', [ArticleController::class, 'create'])->name('article.create');
     Route::post('/article/store', [ArticleController::class, 'store'])->name('article.store');
 });
 
-// Gruppo di rotte per l'Admin (Corrado)
+// Gruppo di rotte per l'Admin
 Route::middleware('admin')->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::patch('/admin/user/{user}/set-admin', [AdminController::class, 'setAdmin'])->name('admin.setAdmin');
@@ -32,7 +33,7 @@ Route::middleware('admin')->group(function () {
     Route::patch('/admin/user/{user}/set-writer', [AdminController::class, 'setWriter'])->name('admin.setWriter');
 });
 
-// Gruppo di rotte per il Revisore (Sara)
+// Gruppo di rotte per il Revisore
 Route::middleware('revisor')->group(function () {
     Route::get('/revisor/dashboard', [RevisorController::class, 'dashboard'])->name('revisor.dashboard');
     Route::post('/revisor/article/{article}/accept', [RevisorController::class, 'acceptArticle'])->name('revisor.acceptArticle');
