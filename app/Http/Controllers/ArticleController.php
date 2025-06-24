@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag; 
 use App\Models\User;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
-
     public function articleSearch(Request $request)
     {
         $query = $request->input('query');
@@ -55,9 +56,10 @@ class ArticleController extends Controller
             'body' => 'required|min:10',
             'image' => 'required|image',
             'category' => 'required',
+            'tags' => 'required', 
         ]);
 
-        Article::create([
+        $article = Article::create([
             'title' => $request->title,
             'subtitle' => $request->subtitle,
             'body' => $request->body,
@@ -66,6 +68,18 @@ class ArticleController extends Controller
             'user_id' => Auth::user()->id,
         ]);
 
+        // Gestione dei tags
+        $tags = explode(',', $request->tags);
+        
+        foreach ($tags as $tag) {
+            $newTag = Tag::updateOrCreate(
+                ['name' => Str::lower(trim($tag))], 
+                ['name' => Str::lower(trim($tag))]
+            );
+            $article->tags()->attach($newTag); 
+        }
+
         return redirect(route('homepage'))->with('message', 'Articolo creato con successo, ora è in attesa di revisione.');
     }
 }
+

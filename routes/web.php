@@ -31,6 +31,11 @@ Route::middleware('admin')->group(function () {
     Route::patch('/admin/user/{user}/set-admin', [AdminController::class, 'setAdmin'])->name('admin.setAdmin');
     Route::patch('/admin/user/{user}/set-revisor', [AdminController::class, 'setRevisor'])->name('admin.setRevisor');
     Route::patch('/admin/user/{user}/set-writer', [AdminController::class, 'setWriter'])->name('admin.setWriter');
+    Route::post('/admin/category/store', [AdminController::class, 'storeCategory'])->name('admin.storeCategory');
+    Route::put('/admin/category/{category}/edit', [AdminController::class, 'editCategory'])->name('admin.editCategory');
+    Route::delete('/admin/category/{category}/delete', [AdminController::class, 'deleteCategory'])->name('admin.deleteCategory');
+    Route::put('/admin/tag/{tag}/edit', [AdminController::class, 'editTag'])->name('admin.editTag');
+    Route::delete('/admin/tag/{tag}/delete', [AdminController::class, 'deleteTag'])->name('admin.deleteTag');
 });
 
 // Gruppo di rotte per il Revisore
