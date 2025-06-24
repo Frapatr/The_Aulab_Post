@@ -1,42 +1,34 @@
 <x-layout>
-    @if (session('message'))
-    <div class="alert alert-success text-center">
-        {{ session('message') }}
-    </div>
-    @endif
-    <div class="container-fluid p-5 bg-secondary-subtle text-center">
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <h1 class="display-1">The Aulab Post</h1>
+    {{-- Hero Section per la Homepage --}}
+    <div class="container-fluid py-5 bg-light text-center border-bottom">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="display-2 fw-bold">The Aulab Post</h1>
+                <p class="lead text-muted">Il tuo punto di riferimento quotidiano per notizie, approfondimenti e storie dal mondo digitale e non solo.</p>
+                <p>
+                    <a href="{{ route('article.index') }}" class="btn btn-dark my-2">Leggi tutti gli articoli</a>
+                    <a href="{{ route('careers') }}" class="btn btn-outline-secondary my-2">Lavora con noi</a>
+                </p>
             </div>
         </div>
     </div>
-    <div class="container my-5">
-    <div class="row justify-content-evenly">
-        @foreach ($articles as $article)
-            <div class="col-12 col-md-3 my-2">
-                <div class="card" style="width: 18rem;">
-                    {{-- Immagine dell'articolo --}}
-                    <img src="{{ Storage::url($article->image) }}" class="card-img-top" alt="Immagine dell'articolo: {{ $article->title }}"> 
-                    <div class="card-body">
-                        {{-- Titolo e sottotitolo --}}
-                        <h5 class="card-title">{{ $article->title }}</h5> 
-                        <p class="card-subtitle">{{ $article->subtitle }}</p> 
-                        {{-- Categoria (cliccabile in seguito) --}}
-                        <p class="small text-muted">Categoria:
-                            <a href="#" class="text-capitalize text-muted">{{ $article->category->name }}</a> 
-                        </p>
+
+    {{-- Sezione "Ultimi Articoli" --}}
+    <div class="album py-5">
+        <div class="container">
+            <h2 class="text-center mb-5 fw-bold">I nostri ultimi articoli</h2>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                @forelse($articles as $article)
+                    <div class="col">
+                        {{-- Utilizzo del nuovo componente Article Card --}}
+                        <x-article-card :article="$article" />
                     </div>
-                    <div class="card-footer d-flex justify-content-between align-items-center">
-                        {{-- Autore e data --}}
-                        <p class="small">Redatto il {{ $article->created_at->format('d/m/Y') }} <br>
-                            da {{ $article->user->name }}</p> 
-                        {{-- Bottone per la pagina di dettaglio --}}
-                        <a href="{{route('article.show', $article)}}" class="btn btn-outline-secondary">Leggi</a> 
+                @empty
+                    <div class="col-12">
+                        <p class="text-center h3">Nessun articolo da mostrare al momento.</p>
                     </div>
-                </div>
+                @endforelse
             </div>
-        @endforeach
+        </div>
     </div>
-</div>
 </x-layout>
