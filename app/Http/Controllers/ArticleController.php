@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tag; 
+use App\Models\Tag;
 use App\Models\User;
 use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ArticleController extends Controller
@@ -81,5 +82,76 @@ class ArticleController extends Controller
 
         return redirect(route('homepage'))->with('message', 'Articolo creato con successo, ora è in attesa di revisione.');
     }
+    public function edit(Article $article)
+    {
+        if (Auth::user()->id !== $article->user_id) {
+            return redirect()->route('homepage')->with('alert', 'Accesso non consentito.');
+        }
+
+        return view('article.edit', compact('article'));
+    }
+
+    /**
+     * Aggiorna un articolo esistente nel database.
+     */
+    public function update(Request $request, Article $article)
+    {
+        if (Auth::user()->id !== $article->user_id) {
+            return redirect()->route('homepage')->with('alert', 'Accesso non consentito.');
+        }
+
+        $request->validate([
+            'title' => 'required|min:5|unique:articles,title,' . $article->id,
+            'subtitle' => 'required|min:5',
+            'body' => 'required|min:10',
+            'image' => 'image',
+            'category' => 'required',
+            'tags' => 'required',
+        ]);
+
+        $article->update([
+            'title' => $request->title,
+            'subtitle' => $request->subtitle,
+            'body' => $request->body,
+            'category_id' => $request->category,
+            'is_accepted' => NULL, // L'articolo torna in revisione
+        ]);
+
+        if ($request->hasFile('image')) {
+            Storage::delete($article->image); // Cancella la vecchia immagine
+            $newImage = $request->file('image')->store('images', 'public');
+            $article->update(['image' => $newImage]);
+        }
+
+        $tags = explode(',', $request->tags);
+        $newTags = [];
+        foreach ($tags as $tag) {
+            $newTag = Tag::updateOrCreate(
+                ['name' => Str::lower(trim($tag))],
+                ['name' => Str::lower(trim($tag))]
+            );
+            $newTags[] = $newTag->id;
+        }
+        $article->tags()->sync($newTags); // Sincronizza i tag
+
+        return redirect(route('writer.dashboard'))->with('message', 'Articolo modificato con successo, è stato rimandato in revisione.');
+    }
+
+    /**
+     * Cancella un articolo dal database.
+     */
+    public function destroy(Article $article)
+    {
+        if (Auth::user()->id !== $article->user_id) {
+            return redirect()->route('homepage')->with('alert', 'Accesso non consentito.');
+        }
+
+        Storage::delete($article->image); // Cancella l'immagine associata
+        $article->tags()->detach(); // Scollega tutti i tag
+        $article->delete(); // Cancella l'articolo
+
+        return redirect(route('writer.dashboard'))->with('message', 'Articolo cancellato con successo.');
+    }
 }
+
 

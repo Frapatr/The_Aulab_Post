@@ -16,21 +16,14 @@
             <a class="nav-link" href="{{ route('careers') }}">Lavora con noi</a>
         </li>
       </ul>
-
-      {{-- Form di ricerca aggiunto --}}
       <form class="d-flex" action="{{ route('article.search') }}" method="GET">
         <input class="form-control me-2" type="search" name="query" placeholder="Cerca articoli..." aria-label="Search">
         <button class="btn btn-outline-light" type="submit">Cerca</button>
       </form>
-
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         @guest
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('register') }}">Registrati</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('login') }}">Accedi</a>
-            </li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Registrati</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Accedi</a></li>
         @endguest
         @auth
             <li class="nav-item dropdown">
@@ -40,6 +33,7 @@
                 <ul class="dropdown-menu dropdown-menu-end">
                     @if(Auth::user()->is_writer)
                       <li><a class="dropdown-item" href="{{ route('article.create') }}">Inserisci Articolo</a></li>
+                      <li><a class="dropdown-item" href="{{ route('writer.dashboard') }}">Dashboard Redattore</a></li>
                     @endif
                     @if(Auth::user()->is_admin)
                       <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Dashboard Admin</a></li>
@@ -50,9 +44,7 @@
                     <li><hr class="dropdown-divider"></li>
                     <li>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none"> @csrf </form>
-                        <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            Logout
-                        </a>
+                        <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                     </li>
                 </ul>
             </li>
