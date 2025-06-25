@@ -11,27 +11,23 @@ use Illuminate\Support\Facades\Mail;
 
 class PublicController extends Controller
 {
-    /**
-     * Mostra la homepage con gli ultimi articoli.
-     */
+
     public function homepage()
     {
-        // CORREZIONE: Rimosso il filtro where('is_accepted', true) per evitare l'errore.
-        $articles = Article::orderBy('created_at', 'desc')->take(4)->get();
+        $articles = Article::where('is_accepted', true)
+                            ->orderBy('created_at', 'desc')
+                            ->take(4)
+                            ->get();
+
         return view('welcome', compact('articles'));
     }
 
-    /**
-     * Mostra la pagina "Lavora con noi".
-     */
+
     public function careers()
     {
         return view('careers');
     }
 
-    /**
-     * Gestisce l'invio della candidatura.
-     */
     public function careersSubmit(Request $request)
     {
         $request->validate([

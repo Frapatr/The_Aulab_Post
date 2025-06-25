@@ -63,6 +63,7 @@ class ArticleController extends Controller
         $article = Article::create([
             'title' => $request->title,
             'subtitle' => $request->subtitle,
+            'slug' => Str::slug($request->title),
             'body' => $request->body,
             'image' => $request->file('image')->store('images', 'public'),
             'category_id' => $request->category,
@@ -112,6 +113,7 @@ class ArticleController extends Controller
         $article->update([
             'title' => $request->title,
             'subtitle' => $request->subtitle,
+            'slug' => Str::slug($request->title),
             'body' => $request->body,
             'category_id' => $request->category,
             'is_accepted' => NULL, // L'articolo torna in revisione

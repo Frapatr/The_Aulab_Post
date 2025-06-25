@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background: linear-gradient(to right, #232526, #414345); box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
   <div class="container">
     <a class="navbar-brand fw-bold" href="{{ route('homepage') }}">The Aulab Post</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,13 +33,15 @@
                 <ul class="dropdown-menu dropdown-menu-end">
                     @if(Auth::user()->is_writer)
                       <li><a class="dropdown-item" href="{{ route('article.create') }}">Inserisci Articolo</a></li>
-                      <li><a class="dropdown-item" href="{{ route('writer.dashboard') }}">Dashboard Redattore</a></li>
                     @endif
                     @if(Auth::user()->is_admin)
                       <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Dashboard Admin</a></li>
                     @endif
                     @if(Auth::user()->is_revisor)
                       <li><a class="dropdown-item" href="{{ route('revisor.dashboard') }}">Dashboard Revisore</a></li>
+                    @endif
+                    @if(Auth::user()->is_writer)
+                      <li><a class="dropdown-item" href="{{ route('writer.dashboard') }}">Dashboard Redattore</a></li>
                     @endif
                     <li><hr class="dropdown-divider"></li>
                     <li>
@@ -53,3 +55,19 @@
     </div>
   </div>
 </nav>
+
+<style>
+    .navbar-nav .nav-link {
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+    .navbar-nav .nav-link:hover {
+        color: #ffffff !important;
+        transform: translateY(-2px);
+    }
+    .navbar-brand {
+        transition: transform 0.3s ease;
+    }
+    .navbar-brand:hover {
+        transform: scale(1.05);
+    }
+</style>
