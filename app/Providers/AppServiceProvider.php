@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    publicT function boot(): void
+    public function boot(): void
     {
         // Questo codice è stato commentato per permettere
         // il deploy su server come Railway/Render,
