@@ -1,9 +1,7 @@
-
 <?php
-
 namespace App\Providers;
 
-use App\Models\Tag; // Aggiunto import
+use App\Models\Tag;
 use App\Models\Category;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
@@ -22,12 +20,11 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    publicT function boot(): void
     {
-        // =========================================================
-        // QUESTE RIGHE SONO STATE COMMENTATE (DISATTIVATE)
-        // PER CORREGGERE L'ERRORE DI DEPLOY.
-        // =========================================================
+        // Questo codice è stato commentato per permettere
+        // il deploy su server come Railway/Render,
+        // che eseguono comandi prima che il database sia pronto.
         //
         // if (Schema::hasTable('categories')) {
         //     $categories = Category::all();
