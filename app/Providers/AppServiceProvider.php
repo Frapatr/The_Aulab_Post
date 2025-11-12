@@ -1,3 +1,4 @@
+
 <?php
 
 namespace App\Providers;
@@ -21,16 +22,21 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    //public function boot(): void
+    public function boot(): void
     {
-        if (Schema::hasTable('categories')) {
-            $categories = Category::all();
-            View::share('categories', $categories);
-        }
-
-        if (Schema::hasTable('tags')) {
-            $tags = Tag::all();
-            View::share('tags', $tags);
-        }
+        // =========================================================
+        // QUESTE RIGHE SONO STATE COMMENTATE (DISATTIVATE)
+        // PER CORREGGERE L'ERRORE DI DEPLOY.
+        // =========================================================
+        //
+        // if (Schema::hasTable('categories')) {
+        //     $categories = Category::all();
+        //     View::share('categories', $categories);
+        // }
+        //
+        // if (Schema::hasTable('tags')) {
+        //     $tags = Tag::all();
+        //     View::share('tags', $tags);
+        // }
     }
 }
